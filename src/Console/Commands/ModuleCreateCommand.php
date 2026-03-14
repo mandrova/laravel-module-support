@@ -180,16 +180,16 @@ PHP;
         }
 
         if ($hasMigrations) {
-            $loads[] = "\\$this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');";
+            $loads[] = "\$this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');";
         }
 
         if ($hasTranslations) {
-            $loads[] = "\\$this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', '{$name}');";
+            $loads[] = "\$this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', '{$name}');";
         }
 
         if ($hasEvents) {
             $imports[] = "use Modules\\{$name}\\Providers\\EventServiceProvider;";
-            $registers[] = "\\$this->app->register(EventServiceProvider::class);";
+            $registers[] = "\$this->app->register(EventServiceProvider::class);";
         }
 
         $importsBlock = implode("\n", $imports);
