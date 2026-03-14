@@ -2,8 +2,6 @@
 
 Composer-installable module support for Laravel applications.
 
-This package moves the **module support framework** into `vendor/`, while your actual application modules stay inside your Laravel project (by default in `modules/`).
-
 That gives you a clean split:
 
 - **this package** provides module discovery, state management, commands, dependency checks and provider loading
