@@ -5,6 +5,7 @@ namespace VBKSolutions\LaravelModuleSupport\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use VBKSolutions\LaravelModuleSupport\Services\ModuleManager;
 
 class ModuleCreateCommand extends Command
 {
@@ -14,7 +15,7 @@ class ModuleCreateCommand extends Command
 
     private string $moduleDirectory;
 
-    public function handle(): int
+    public function handle(ModuleManager $moduleManager): int
     {
         $name = (string) ($this->argument('name') ?: $this->ask('Enter the name of the module'));
         $name = Str::studly($name);
@@ -43,6 +44,7 @@ class ModuleCreateCommand extends Command
         $createTranslations = (bool) $this->confirm('Do you want to create translations?', false);
         $createProviders = (bool) $this->confirm('Do you want to create providers?', false);
         $createEvents = (bool) $this->confirm('Do you want to create events?', false);
+        $disabledModule = (bool) $this->confirm('Do you want to create this module in a disabled state?', false);
 
         if ($createApiRoutes || $createMigrations || $createTranslations || $createEvents) {
             $createProviders = true;
@@ -90,6 +92,11 @@ class ModuleCreateCommand extends Command
         }
 
         $this->info("Module {$name} created successfully.");
+
+        if (!$disabledModule) {
+            $moduleManager->enable($name);
+            $this->line("Module {$name} enabled successfully.");
+        }
 
         return self::SUCCESS;
     }
